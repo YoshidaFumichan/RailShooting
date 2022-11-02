@@ -5,6 +5,7 @@
 #include <d3dx12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
+#include <chrono>
 
 #include "WinApp.h"
 
@@ -48,7 +49,8 @@ public: // メンバ関数
 private: // メンバ変数
 	// WindowsAPI
 	WinApp* winApp = nullptr;
-
+	// 記録時間 (FPS固定用)
+	std::chrono::steady_clock::time_point reference;
 	// DirectX3D関連
 	// デバイス
 	ComPtr<ID3D12Device> dev;
@@ -76,6 +78,11 @@ private: // メンバ変数
 	UINT64 fenceVal = 0;
 
 private: // メンバ関数
+	/// <summary>
+	/// FPS固定初期化
+	/// </summary>
+	void InitializeFixFps();
+
 	/// <summary>
 	/// デバイスの初期化
 	/// </summary>
@@ -111,4 +118,9 @@ private: // メンバ関数
 	/// </summary>
 	/// <returns>成否</returns>
 	bool InitializeFence();
+
+	/// <summary>
+	/// FPS固定更新
+	/// </summary>
+	void UpdateFixFPS();
 };

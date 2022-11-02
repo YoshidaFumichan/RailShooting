@@ -1,5 +1,6 @@
 #pragma once
 #include "Object3d.h"
+#include "Sprite.h"
 #include "PlayerBullet.h"
 #include "Vector3.h"
 
@@ -48,14 +49,25 @@ public: // メンバ関数
 	void Draw()override;
 
 	/// <summary>
+	/// スプライト描画処理
+	/// </summary>
+	void SpriteDraw();
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="info">衝突情報</param>
 	void OnCollision(const CollisionInfo& info)override;
 
 private: // メンバ変数
+	// HPバー用スプライト
+	std::unique_ptr<Sprite> hpBarSprite;
+	std::unique_ptr<Sprite> hpSprite;
+	// HPスプライトの大きさ
+	XMFLOAT2 startHPSize = {};
+	XMFLOAT2 nowHPSize = {};
 	// ヒットポイント
-	SHORT hitPoint = 5;
+	float hitPoint = 1.0f;
 	// エネミーとの距離
 	float distance = 20.0;
 	// 移動速度

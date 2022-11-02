@@ -80,7 +80,7 @@ void PlayerBullet::Draw()
 		Object3d::Draw();
 	}
 
-	// エネミークラス独自の描画処理
+	// プレイヤーバレッドクラス独自の描画処理
 
 
 }

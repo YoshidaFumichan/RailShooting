@@ -124,6 +124,9 @@
     <Filter Include="Game\GameObject\Enemy">
       <UniqueIdentifier>{bcc257ba-a1d3-4c34-b0d6-fc8f46f4c7ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameObject\Enemy\EnemyBullet">
+      <UniqueIdentifier>{12f2771a-ca06-4254-9274-e3e8c40badfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -233,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="player\PlayerBullet.cpp">
       <Filter>Game\GameObject\Player\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy\EnemyBullet.cpp">
+      <Filter>Game\GameObject\Enemy\EnemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="player\PlayerBullet.h">
       <Filter>Game\GameObject\Player\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy\EnemyBullet.h">
+      <Filter>Game\GameObject\Enemy\EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

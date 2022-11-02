@@ -38,6 +38,19 @@ bool Player::Initialize()
 
 	// プレイヤークラス独自の初期化処理
 
+	// HPスプライトの設定
+	SpriteCommon::GetInstance()->LoadTexture(10, L"Resources/HPBar/EnemyHPBar.png");
+	SpriteCommon::GetInstance()->LoadTexture(11, L"Resources/HPBar/EnemyHP.png");
+	hpBarSprite.reset(Sprite::Create(10));
+	hpSprite.reset(Sprite::Create(11));
+	startHPSize = hpSprite->GetSize();
+	startHPSize.x *= 2.5f;
+	startHPSize.y *= 2.5f;
+	nowHPSize = startHPSize;
+	hpSprite->SetSize(startHPSize);
+	hpBarSprite->SetSize(startHPSize);
+
+
 	// プレイヤー座標を初期化
 	float radian = rotation.y * XM_PI / 180;
 	position.x = sin(radian) * distance;
@@ -67,7 +80,6 @@ void Player::Shot()
 				bullet->SetPosition(position);
 				bullet->SetRotation(rotation);
 				bullet->SetDistance(distance);
-				bullet->SetParentCollider(collider);
 				bulletDelay = 30;
 				break;
 			}
@@ -86,8 +98,8 @@ void Player::Move()
 		if (input->PushKey(DIK_LEFT)) { rotation.y += speed; }
 		if (input->PushKey(DIK_RIGHT)) { rotation.y -= speed; }
 		// 縦移動
-		if (input->PushKey(DIK_UP) && distance > 20) { distance -= 0.1; speed += 0.005f; }
-		if (input->PushKey(DIK_DOWN) && distance < 25) { distance += 0.1; speed -= 0.005f; }
+		if (input->PushKey(DIK_UP) && distance > 20) { distance -= 0.2; speed += 0.01f; }
+		if (input->PushKey(DIK_DOWN) && distance < 25) { distance += 0.2; speed -= 0.01f; }
 
 		// ラジアンに変換
 		float radian = rotation.y * XM_PI / 180;
@@ -141,6 +153,9 @@ void Player::Update()
 		}
 	}
 
+	hpSprite->Update();
+	hpBarSprite->Update();
+
 	if (isAlive) {
 		// 基底クラスの更新処理
 		Object3d::Update();
@@ -154,18 +169,25 @@ void Player::Draw()
 		if (bullet) { bullet->Draw(); }
 	}
 
+
 	if (isAlive) {
 		// 基底クラスの描画処理
 		Object3d::Draw();
 	}
 }
 
+void Player::SpriteDraw()
+{
+	// HP描画処理
+	hpBarSprite->Draw();
+	hpSprite->Draw();
+}
+
 void Player::OnCollision(const CollisionInfo& info)
 {
 	// エネミーの弾に当たった時
 	if (info.collider->GetObjectTag() == "EnemyBulled") {
-		hitPoint -= 1;
+		
+		hitPoint -= 0.1f;
 	}
-
-
 }

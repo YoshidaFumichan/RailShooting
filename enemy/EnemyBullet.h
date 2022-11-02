@@ -2,16 +2,16 @@
 #include "Object3d.h"
 
 /// <summary>
-/// プレイヤーの弾丸
+/// エネミーバレッドクラス
 /// </summary>
-class PlayerBullet : public Object3d
+class EnemyBullet : public Object3d
 {
 public: // 静的メンバ変数
 	/// <summary>
 	/// プレイヤー生成
 	/// </summary>
 	/// <returns>3Dオブジェクト</returns>
-	static PlayerBullet* Create(Model* model = nullptr);
+	static EnemyBullet* Create(Model* model = nullptr);
 
 private: // メンバ変数
 	/// <summary>
@@ -27,7 +27,7 @@ private: // メンバ変数
 	/// <summary>
 	/// エネミーに着弾時の処理
 	/// </summary>
-	void LandingEnemy(const CollisionInfo& info);
+	void LandingPlayer(const CollisionInfo& info);
 
 	/// <summary>
 	/// 着弾後の処理
@@ -109,8 +109,7 @@ private: // メンバ変数
 	// スピード
 	float speed = 0.2f;
 	// 消滅までの距離
-	float distance;
+	float distance = 0.0f;
 	// エフェクトの終了までの時間
 	USHORT effectCount = 0;
 };
-

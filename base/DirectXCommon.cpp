@@ -1,5 +1,6 @@
 #include "DirectXCommon.h"
 #include <cassert>
+#include <thread>
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -12,6 +13,9 @@ void DirectXCommon::Initialize(WinApp* winApp)
 
 	// メンバ変数の記録
 	this->winApp = winApp;
+
+	// FBX固定初期化
+	InitializeFixFps();
 
 	// デバイスの初期化
 	if (!InitializeDevice()) {
@@ -95,11 +99,20 @@ void DirectXCommon::PostDraw()
 		CloseHandle(event);
 	}
 
+	// FPS固定
+	UpdateFixFPS();
+
 	cmdAllocator->Reset(); // キューをクリア
 	cmdList->Reset(cmdAllocator.Get(), nullptr);  // 再びコマンドリストを貯める準備
 
 	// バッファをフリップ（裏表の入替え）
 	swapchain->Present(1, 0);
+}
+
+void DirectXCommon::InitializeFixFps()
+{
+	// 現在時間を記録する
+	reference = std::chrono::steady_clock::now();
 }
 
 bool DirectXCommon::InitializeDevice()
@@ -351,4 +364,26 @@ bool DirectXCommon::InitializeFence()
 	}
 
 	return true;
+}
+
+void DirectXCommon::UpdateFixFPS()
+{
+	// 1/60秒よりわずかに短い時間
+	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	// 1/60秒よりわずかに短い時間
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+	// 現在時間を取得する
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now(); // 前回記録からの経過時間を取得する
+	std::chrono::microseconds elapsed =
+		std::chrono::duration_cast<std::chrono::microseconds>(now - reference);
+		// 1/60秒 (よりわずかに短い時間) 経っていない場合
+		if (elapsed < kMinTime) {
+			// 1/60秒経過するまで微小なスリープを繰り返す
+			while (std::chrono::steady_clock::now() - reference < kMinTime) { 
+				// 1マイクロ秒スリープ
+				std::this_thread::sleep_for(std::chrono::microseconds(1));
+			}
+		}
+	// 現在の時間を記録する
+	reference = std::chrono::steady_clock::now();
 }

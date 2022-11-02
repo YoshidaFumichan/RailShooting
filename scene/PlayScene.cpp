@@ -32,7 +32,7 @@ void PlayScene::Initialize()
 	models["Enemy"].reset(Model::CreateFromOBJ("cube"));
 	enemy.reset(Enemy::Create(models["Enemy"].get()));
 	enemy->SetPosition({ 0,1,0 });
-	enemy->SetTarget(player.get());
+	enemy->SetTarget(&player->GetRotation());
 
 	// スカイドームの生成処理
 	models["Skydome"].reset(Model::CreateFromOBJ("skydome"));
@@ -138,5 +138,6 @@ void PlayScene::ForeDraw(ID3D12GraphicsCommandList* cmdList)
 	spriteCommon->PreDraw();
 
 	// 前景スプライト描画処理
+	player->SpriteDraw();
 	enemy->SpriteDraw();
 }

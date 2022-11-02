@@ -2,6 +2,8 @@
 #include "Object3d.h"
 #include "Sprite.h"
 
+#include "EnemyBullet.h"
+
 /// <summary>
 /// エネミークラス
 /// </summary>
@@ -97,11 +99,13 @@ public: // メンバ関数
 	/// ターゲット
 	/// </summary>
 	/// <param name="targetPosition">ターゲット</param>
-	void SetTarget(const Object3d* target) { this->target = target; }
+	void SetTarget(const XMFLOAT3* targetRot) { this->targetRot = targetRot; }
 
 private: // メンバ変数
 	// ターゲット
-	const Object3d* target;
+	const XMFLOAT3* targetRot;
+	// バレッドクラス
+	EnemyBullet* bullet = nullptr;
 	// HPバー用スプライト
 	std::unique_ptr<Sprite> hpBarSprite;
 	std::unique_ptr<Sprite> hpSprite;

@@ -48,10 +48,8 @@ bool Enemy::Initialize()
 	hpBarSprite->SetSize(startHPSize);
 
 
-
-
 	// サイズの設定
-	float size = 2.0f;
+	float size = 3.0f;
 	SetScale({ size, size, size });
 
 	// コライダーの設定
@@ -63,7 +61,12 @@ bool Enemy::Initialize()
 
 void Enemy::Shot()
 {
-
+	if (!bullet) {
+		bullet = EnemyBullet::Create(Model::CreateFromOBJ("cube"));
+		bullet->SetRotation(*targetRot);
+		bullet->SetIsShot(true);
+		bullet->SetIsDelete(false);
+	}
 }
 
 void Enemy::Move()
@@ -94,6 +97,18 @@ void Enemy::Update()
 		}
 	}
 
+	Shot();
+
+	if (bullet) {
+		// 弾の更新処理
+		bullet->Update();
+		// 消滅フラグが立ってたら
+		if (bullet->GetIsDelete()) {
+			// デリート
+			safe_delete(bullet);
+		}
+	}
+
 	// 基底クラスの更新処理
 	if (isAlive) {
 		Object3d::Update();
@@ -103,7 +118,9 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 	// エネミークラス独自の描画処理
-
+	if (bullet) { 
+		bullet->Draw();
+	}
 
 	// 生存フラグが経っている場合
 	if (isAlive) {

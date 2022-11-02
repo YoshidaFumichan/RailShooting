@@ -180,6 +180,7 @@
     <ClCompile Include="collision\MeshCollider.cpp" />
     <ClCompile Include="collision\SphereCollider.cpp" />
     <ClCompile Include="enemy\Enemy.cpp" />
+    <ClCompile Include="enemy\EnemyBullet.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
     <ClCompile Include="main.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="collision\RaycastHit.h" />
     <ClInclude Include="collision\SphereCollider.h" />
     <ClInclude Include="enemy\Enemy.h" />
+    <ClInclude Include="enemy\EnemyBullet.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="light\DirectionalLight.h" />
     <ClInclude Include="light\LightGroup.h" />
