@@ -1,5 +1,6 @@
 #pragma once
 #include "Object3d.h"
+#include "Timer.h"
 
 /// <summary>
 /// エネミーバレッドクラス
@@ -23,11 +24,6 @@ private: // メンバ変数
 	/// 移動処理
 	/// </summary>
 	void Move();
-
-	/// <summary>
-	/// エネミーに着弾時の処理
-	/// </summary>
-	void LandingPlayer(const CollisionInfo& info);
 
 	/// <summary>
 	/// 着弾後の処理
@@ -91,25 +87,27 @@ public: // メンバ変数
 	/// 距離の取得
 	/// </summary>
 	/// <returns>距離</returns>
-	const USHORT& GetDistance() { return distance; }
+	const float& GetDistance() { return distance; }
 
 	/// <summary>
 	/// 距離の設定
 	/// </summary>
 	/// <param name="isShot">距離</param>
-	void SetDistance(const USHORT& distance) { this->distance = distance; }
+	void SetDistance(const float& distance) { this->distance = distance; }
 
 private: // メンバ変数
+	// スピード
+	float count = 0.0f;
+	// 最終座標
+	XMFLOAT3 endPosition;
 	// 発射フラグ
 	bool isShot = false;
 	// 着弾フラグ
 	bool isLanding = false;
 	// 消滅フラグ
 	bool isDelete = false;
-	// スピード
-	float speed = 0.2f;
 	// 消滅までの距離
 	float distance = 0.0f;
-	// エフェクトの終了までの時間
-	USHORT effectCount = 0;
+	// タイマー
+	std::unique_ptr<Timer> timer;
 };

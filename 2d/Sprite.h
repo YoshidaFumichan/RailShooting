@@ -73,6 +73,11 @@ public: // メンバ関数
 	Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Sprite();
+
+	/// <summary>
 	///  初期化処理
 	/// </summary>
 	void Initialize();

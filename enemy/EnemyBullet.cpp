@@ -1,5 +1,5 @@
 #include "EnemyBullet.h"
-
+#include "Vector3.h"
 #include "CollisionManager.h"
 #include "SphereCollider.h"
 #include "ParticleManager.h"
@@ -23,6 +23,7 @@ EnemyBullet* EnemyBullet::Create(Model* model)
 
 	if (model) {
 		bullet->SetModel(model);
+		model->SetAmbient({ 1,0,0 });
 	}
 
 	return bullet;
@@ -33,14 +34,16 @@ bool EnemyBullet::Initialize()
 	// 基底クラスの初期化処理
 	Object3d::Initialize();
 
+	// タイマー
+	timer.reset(new Timer);
+	timer->CountStart();
+
 	// プレイヤーバレッドクラス独自の初期化処理
-	
 	SetScale({ 0.5f, 0.5f, 0.5f, });
 
 
 	// コライダーの設定
 	SetCollider(new SphereCollider(XMVECTOR({}), 0.4f));
-
 	collider->SetObjectTag("EnemyBullet");
 
 	return true;
@@ -48,26 +51,25 @@ bool EnemyBullet::Initialize()
 
 void EnemyBullet::Move()
 {
-	distance += speed;
+	count += 0.005f;
 
-	// ラジアンに変換
-	float radian = rotation.y * DirectX::XM_PI / 180;
-
-	position.x = sin(radian) * distance;
-	position.z = cos(radian) * distance;
+	// 移動処理
+	position = easeOut({ 0,0,0 }, endPosition, timer->GetRatio(1.5f));
 
 	// 敵に当たったら消滅フラグを立てる
-	if (distance > +50) { isDelete = true; }
+	if (1.0f <= timer->GetRatio(1.5f)) { isDelete = true; }
 }
-
-void EnemyBullet::LandingPlayer(const CollisionInfo& info)
-{
-
-}
-
 
 void EnemyBullet::Update()
 {
+	if (isShot) {
+		// ラジアンを取得
+		float radian = rotation.y * DirectX::XM_PI / 180;
+		endPosition.x = sin(radian) * (distance + 5);
+		endPosition.z = cos(radian) * (distance + 5);
+		isShot = false;
+	}
+
 	// 衝突時演出
 	if (isLanding) {
 		isDelete = true;
@@ -88,10 +90,6 @@ void EnemyBullet::Draw()
 	if (!isLanding) {
 		Object3d::Draw();
 	}
-
-	// エネミーバレッド独自の描画処理
-
-
 }
 
 void EnemyBullet::OnCollision(const CollisionInfo& info)
@@ -100,7 +98,6 @@ void EnemyBullet::OnCollision(const CollisionInfo& info)
 	if (info.collider->GetObjectTag() == "Player") {
 		if (!isLanding) {
 			isLanding = true;
-			LandingPlayer(info);
 		}
 	}
 
@@ -114,11 +111,5 @@ void EnemyBullet::LandingAfter()
 		safe_delete(collider);
 	}
 
-	// エフェクト終了までのカウント
-	effectCount = 0;
-
-	// 消滅フラグ管理
-	if (effectCount == 0) {
-		isDelete = true;
-	}
+	isDelete = true;
 }

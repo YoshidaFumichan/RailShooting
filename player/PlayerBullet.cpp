@@ -91,6 +91,7 @@ void PlayerBullet::OnCollision(const CollisionInfo& info)
 	if (info.collider->GetObjectTag() == "Enemy") {
 		if (!isLanding) {
 			isLanding = true;
+			deleteTimer.CountStart();
 			LandingEnemy(info);
 		}
 	}
@@ -99,7 +100,6 @@ void PlayerBullet::OnCollision(const CollisionInfo& info)
 
 void PlayerBullet::LandingEnemy(const CollisionInfo& info)
 {
-	effectCount = 60;
 	// 着弾時のエフェクト処理
 	for (int i = 0; i < 30; ++i) {
 		XMFLOAT3 pos{};
@@ -119,7 +119,7 @@ void PlayerBullet::LandingEnemy(const CollisionInfo& info)
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 		acc.z = -(float)rand() / RAND_MAX * rnd_acc;
 
-		ParticleManager::GetInstance()->Add(effectCount, position, vel, acc, { 1,1,1 }, { 1,0,0 }, 1, 0);
+		ParticleManager::GetInstance()->Add(effectEndTime, position, vel, acc, { 1,1,1 }, { 1,0,0 }, 1, 0);
 	}
 
 }
@@ -133,10 +133,9 @@ void PlayerBullet::LandingAfter()
 	}
 
 	// エフェクト終了までのカウント
-	effectCount--;
 
 	// 消滅フラグ管理
-	if (effectCount == 0) {
+	if (deleteTimer.GetRatio(effectEndTime) == 1.0f) {
 		isDelete = true;
 	}
 }

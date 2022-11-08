@@ -15,7 +15,7 @@ void DirectXCommon::Initialize(WinApp* winApp)
 	this->winApp = winApp;
 
 	// FBX固定初期化
-	InitializeFixFps();
+	//InitializeFixFps();
 
 	// デバイスの初期化
 	if (!InitializeDevice()) {
@@ -63,8 +63,8 @@ void DirectXCommon::PreDraw()
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
-	// 全画面クリア         R     G     B    A
-	float clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
+	// 全画面クリア         R     G     B     A
+	float clearColor[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // 青っぽい色
 	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 
 	// 深度バッファクリア
@@ -100,7 +100,7 @@ void DirectXCommon::PostDraw()
 	}
 
 	// FPS固定
-	UpdateFixFPS();
+	//UpdateFixFPS();
 
 	cmdAllocator->Reset(); // キューをクリア
 	cmdList->Reset(cmdAllocator.Get(), nullptr);  // 再びコマンドリストを貯める準備

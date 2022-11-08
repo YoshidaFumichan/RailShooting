@@ -29,14 +29,17 @@ void PlayScene::Initialize()
 	player.reset(Player::Create(models["Player"].get()));
 
 	// エネミーの生成処理
-	models["Enemy"].reset(Model::CreateFromOBJ("cube"));
+	models["Enemy"].reset(Model::CreateFromOBJ("oopth3"));
 	enemy.reset(Enemy::Create(models["Enemy"].get()));
-	enemy->SetPosition({ 0,1,0 });
-	enemy->SetTarget(&player->GetRotation());
+	enemy->SetScale({ 0.5f, 0.5f, 0.5f });
+	enemy->SetPosition({ 0,0,0 });
+	enemy->SetTarget(player.get());
 
 	// スカイドームの生成処理
-	models["Skydome"].reset(Model::CreateFromOBJ("skydome"));
-	objects["Skydome"].reset(Object3d::Create(models["Skydome"].get()));
+	models["Stage"].reset(Model::CreateFromOBJ("Stage"));
+	objects["Stage"].reset(Object3d::Create(models["Stage"].get()));
+	objects["Stage"]->SetScale({ 3.0f, 3.0f, 3.0f, });
+	objects["Stage"]->SetPosition({ 0.0f, 15.0f, 0.0f, });
 }
 
 void PlayScene::Finalize()
@@ -54,7 +57,7 @@ void PlayScene::Update()
 	if (enemy) {
 		enemy->Update();
 		if (enemy->GetIsDelete()) {
-			enemy.get_deleter();
+			//enemy.get_deleter();
 		}
 	}
 	// オブジェクトの更新処理

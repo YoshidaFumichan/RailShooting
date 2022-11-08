@@ -29,6 +29,10 @@ Sprite::Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color,
 	this->isFlipY = isFlipY;
 }
 
+Sprite::~Sprite()
+{
+}
+
 void Sprite::Initialize()
 {
 	HRESULT result = S_FALSE;

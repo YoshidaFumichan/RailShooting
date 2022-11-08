@@ -71,10 +71,12 @@ public: // サブクラス
 		XMFLOAT3 e_color = {};
 		float e_scale = 0.0f;
 		float e_rotation = 0.0f;
-		// 現在フレーム
-		int frame = 0;
-		// 終了フレーム
-		int num_frame = 0;
+		// 初期タイム
+		float s_time = 0.0f;
+		// 現在タイム
+		float time = 0.0f;
+		// 終了タイム
+		float num_time = 0.0f;
 	};
 
 private: // 定数
@@ -116,7 +118,7 @@ public: // メンバ関数
 	/// <param name="end_color">終了時カラー</param>
 	/// <param name="start_scale">開始時スケール</param>
 	/// <param name="end_scale">終了時スケール</param>
-	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT3 start_color, XMFLOAT3 end_color, float start_scale, float end_scale);
+	void Add(float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT3 start_color, XMFLOAT3 end_color, float start_scale, float end_scale);
 
 	/// <summary>
 	/// デスクリプタヒープの初期化

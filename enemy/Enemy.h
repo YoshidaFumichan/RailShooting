@@ -1,6 +1,8 @@
 #pragma once
 #include "Object3d.h"
 #include "Sprite.h"
+#include "Vector3.h"
+#include "Timer.h"
 
 #include "EnemyBullet.h"
 
@@ -15,6 +17,19 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <returns>3Dオブジェクト</returns>
 	static Enemy* Create(Model* model = nullptr);
+
+public: // サブクラス
+	/// <summary>
+	/// 攻撃の種類
+	/// </summary>
+	enum AttackType
+	{
+		NORMAL,
+		BEAM,
+		SHOTGUN,
+
+		END,
+	};
 
 private: // メンバ関数
 	/// <summary>
@@ -96,14 +111,20 @@ public: // メンバ関数
 	void SetIsAlive(const bool& isAlive) { this->isAlive = isAlive; }
 
 	/// <summary>
-	/// ターゲット
+	/// ターゲットを設定
 	/// </summary>
 	/// <param name="targetPosition">ターゲット</param>
-	void SetTarget(const XMFLOAT3* targetRot) { this->targetRot = targetRot; }
+	void SetTarget(Object3d* target) { this->target = target; }
+
+	/// <summary>
+	/// バレッドを取得
+	/// </summary>
+	/// <returns>バレッド</returns>
+	const EnemyBullet* GetBullet() { return bullet; }
 
 private: // メンバ変数
 	// ターゲット
-	const XMFLOAT3* targetRot;
+	Object3d* target;
 	// バレッドクラス
 	EnemyBullet* bullet = nullptr;
 	// HPバー用スプライト
@@ -122,6 +143,17 @@ private: // メンバ変数
 	bool isDelete = false;
 	// 撃破演出フラグ
 	bool isDefeat = false;
+	// 攻撃識別用
+	USHORT attackNum = NORMAL;
 	// 撃破演出時間
 	SHORT defeatEffectTime = 180;
+	// 発射までのタイマー
+	Timer* bulletCount = nullptr;
+	// 発射可能フラグ
+	bool isShot = true;
+	// 移動フラグ
+	bool isMove = false;
+	bool isMoveEnd = false;
+	XMFLOAT3 startMoveRotation;
+	XMFLOAT3 endMoveRotation;
 };

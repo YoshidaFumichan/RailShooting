@@ -79,7 +79,7 @@ void ParticleManager::Update()
 	HRESULT result;
 
 	// 寿命が尽きたパーティクルを全削除
-	particles.remove_if([](Particle& x) { return x.frame >= x.num_frame; });
+	particles.remove_if([](Particle& x) { return x.time >= x.num_time; });
 
 	// 全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin();
@@ -87,9 +87,9 @@ void ParticleManager::Update()
 		it++) {
 
 		// 経過フレーム数をカウント
-		it->frame++;
+		it->time = ((float)GetTickCount64() / 1000) - it->s_time;
 		// 進行度を0～1の範囲に換算
-		float f = (float)it->num_frame / it->frame;
+		float t = (float)it->num_time / it->time;
 
 		// 速度に加速度を加算
 		it->velocity = it->velocity + it->accel;
@@ -98,13 +98,13 @@ void ParticleManager::Update()
 		it->position = it->position + it->velocity;
 
 		// カラーの線形補間
-		it->color = it->s_color + (it->e_color - it->s_color) / f;
+		it->color = it->s_color + (it->e_color - it->s_color) / t;
 
 		// スケールの線形補間
-		it->scale = it->s_scale + (it->e_scale - it->s_scale) / f;
+		it->scale = it->s_scale + (it->e_scale - it->s_scale) / t;
 
 		// スケールの線形補間
-		it->rotation = it->s_rotation + (it->e_rotation - it->s_rotation) / f;
+		it->rotation = it->s_rotation + (it->e_rotation - it->s_rotation) / t;
 	}
 
 	// 頂点バッファへデータ転送
@@ -176,7 +176,7 @@ void ParticleManager::Draw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->DrawInstanced(drawNum, 1, 0, 0);
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT3 start_color, XMFLOAT3 end_color, float start_scale, float end_scale)
+void ParticleManager::Add(float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT3 start_color, XMFLOAT3 end_color, float start_scale, float end_scale)
 {
 	// リストに要素を追加
 	particles.emplace_front();
@@ -189,7 +189,8 @@ void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOA
 	p.e_color = end_color;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
-	p.num_frame = life;
+	p.s_time = (float)GetTickCount64() / 1000;
+	p.num_time = life;
 }
 
 void ParticleManager::InitializeDescriptorHeap()

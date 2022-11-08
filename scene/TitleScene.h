@@ -1,7 +1,6 @@
 #pragma once
-
 #include "BaseScene.h"
-
+#include "Timer.h"
 
 /// <summary>
 /// タイトルシーン
@@ -57,10 +56,10 @@ private: // メンバ関数
 
 private: // メンバ変数
 	// タイトル画面のスプライト
-	Sprite_p titleSprite = nullptr;
-	// 背景用スプライト
-	Sprite_p BGSprite = nullptr;
+	std::map<string, Sprite_p> titleSprites;
 	// シーン切り替え用フラグ
 	bool change = false;
-
+	Timer changeTimer;
+	float changeSeconds = 3.0f;
+	XMFLOAT2 whiteSize = {};
 };

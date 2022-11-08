@@ -39,8 +39,8 @@ bool Player::Initialize()
 	// プレイヤークラス独自の初期化処理
 
 	// HPスプライトの設定
-	SpriteCommon::GetInstance()->LoadTexture(10, L"Resources/HPBar/EnemyHPBar.png");
-	SpriteCommon::GetInstance()->LoadTexture(11, L"Resources/HPBar/EnemyHP.png");
+	SpriteCommon::GetInstance()->LoadTexture(10, L"Resources/HPBar/PlayerHPBar.png");
+	SpriteCommon::GetInstance()->LoadTexture(11, L"Resources/HPBar/PlayerHP.png");
 	hpBarSprite.reset(Sprite::Create(10));
 	hpSprite.reset(Sprite::Create(11));
 	startHPSize = hpSprite->GetSize();
@@ -179,8 +179,8 @@ void Player::Draw()
 void Player::SpriteDraw()
 {
 	// HP描画処理
-	hpBarSprite->Draw();
-	hpSprite->Draw();
+	//hpBarSprite->Draw();
+	//hpSprite->Draw();
 }
 
 void Player::OnCollision(const CollisionInfo& info)

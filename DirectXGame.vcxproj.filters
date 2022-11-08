@@ -127,6 +127,9 @@
     <Filter Include="Game\GameObject\Enemy\EnemyBullet">
       <UniqueIdentifier>{12f2771a-ca06-4254-9274-e3e8c40badfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Timer">
+      <UniqueIdentifier>{f68ffb43-b72c-4a52-b12d-5ec6fa11bef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -201,9 +204,6 @@
     <ClCompile Include="collision\CollisionPrimitive.cpp">
       <Filter>Engine\Collison\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="3d\TouchableObject.cpp">
-      <Filter>Engine\Object3d\OBJ</Filter>
-    </ClCompile>
     <ClCompile Include="collision\MeshCollider.cpp">
       <Filter>Engine\Collison\Collider</Filter>
     </ClCompile>
@@ -239,6 +239,12 @@
     </ClCompile>
     <ClCompile Include="enemy\EnemyBullet.cpp">
       <Filter>Game\GameObject\Enemy\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="math\Vector1.cpp">
+      <Filter>Engine\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="math\Vector2.cpp">
+      <Filter>Engine\Math\Vector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,9 +378,6 @@
     <ClInclude Include="collision\CollisionPrimitive.h">
       <Filter>Engine\Collison\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="3d\TouchableObject.h">
-      <Filter>Engine\Object3d\OBJ</Filter>
-    </ClInclude>
     <ClInclude Include="collision\CollisionAttribute.h">
       <Filter>Engine\Collison</Filter>
     </ClInclude>
@@ -419,6 +422,15 @@
     </ClInclude>
     <ClInclude Include="enemy\EnemyBullet.h">
       <Filter>Game\GameObject\Enemy\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vector1.h">
+      <Filter>Engine\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vector2.h">
+      <Filter>Engine\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="timer\Timer.h">
+      <Filter>Engine\Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -467,8 +467,7 @@ void Model::SetSpecular(const XMFLOAT3& specular)
 
 void Model::SetAlpha(const float& alpha)
 {
-	for (auto m : materials)
-	{
+	for (auto& m : materials) {
 		m.second->alpha = alpha;
 		m.second->Update();
 	}

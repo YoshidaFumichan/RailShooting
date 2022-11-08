@@ -116,13 +116,6 @@ Vector3& Vector3::operator-=(const DirectX::XMFLOAT3& xm)
 	return *this;
 }
 
-Vector3& Vector3::operator=(const DirectX::XMFLOAT2& xm)
-{
-	this->x = xm.x;
-	this->y = xm.y;
-	this->z = 0;
-	return *this;
-}
 
 // Vector3 クラスに属さない関数群
 // 二項演算子
@@ -168,27 +161,27 @@ const Vector3 operator/(const Vector3& v, float s)
 }
 
 // 線形補完 (一次補間)
-const Vector3 lerp(const Vector3& start, const Vector3& end, const float t)
+const Vector3& lerp(const Vector3& start, const Vector3& end, const float& t)
 {
 	return start * (1.0f - t) + end * t;
 }
 
 // イーズイン (二次補間)
-const Vector3 easeIn(const Vector3& start, const Vector3& end, const float t)
+const Vector3& easeIn(const Vector3& start, const Vector3& end, const float& t)
 {
 	float y = t * t;
 	return start * (1.0f - y) + end * y;
 }
 
 // イーズアウト (二次補間)
-const Vector3 easeOut(const Vector3& start, const Vector3& end, const float t)
+const Vector3& easeOut(const Vector3& start, const Vector3& end, const float& t)
 {
 	float y = t * (2 - t);
 	return start * (1.0f - y) + end * y;
 }
 
 // イーズインアウト (二次補間)
-const Vector3 easeInOut(const Vector3& start, const Vector3& end, const float t)
+const Vector3& easeInOut(const Vector3& start, const Vector3& end, const float& t)
 {
 	float y = (t * t) * (3.0f - 2.0f * t);
 	return start * (1.0f - y) + end * y;

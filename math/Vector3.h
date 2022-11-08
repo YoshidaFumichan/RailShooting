@@ -34,7 +34,6 @@ public:
 	Vector3& operator=(const DirectX::XMFLOAT3& xm);
 	Vector3& operator+=(const DirectX::XMFLOAT3& xm);
 	Vector3& operator-=(const DirectX::XMFLOAT3& xm);
-	Vector3& operator=(const DirectX::XMFLOAT2& xm);
 };
 
 // 2項演算子オーバーロード
@@ -49,13 +48,13 @@ const Vector3 operator/(const Vector3& v, float s);
 
 // 補完関数
 // 線形補完(1次関数補完)
-const Vector3 lerp(const Vector3& start, const Vector3& end, const float t);
+const Vector3& lerp(const Vector3& start, const Vector3& end, const float& t);
 // イーズイン(2次関数補完)
-const Vector3 easeIn(const Vector3& start, const Vector3& end, const float t);
+const Vector3& easeIn(const Vector3& start, const Vector3& end, const float& t);
 // イーズアウト(2次関数補完)
-const Vector3 easeOut(const Vector3& start, const Vector3& end, const float t);
+const Vector3& easeOut(const Vector3& start, const Vector3& end, const float& t);
 // イーズインアウト(2次関数補完)
-const Vector3 easeInOut(const Vector3& start, const Vector3& end, const float t);
+const Vector3& easeInOut(const Vector3& start, const Vector3& end, const float& t);
 // スプライト補間(3次関数補間)
 // n + 2個分の点を使って、P1～Pnの間を、スプライン補間する
 // (P0) - P1 - P2 - … Pn - (Pn+1)

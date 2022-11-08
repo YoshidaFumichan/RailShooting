@@ -1,11 +1,11 @@
 #include "TitleScene.h"
-#include "Collision.h"
 #include "CollisionManager.h";
 #include "SphereCollider.h";
 #include "SceneManager.h"
 #include "PlayScene.h"
+#include "Vector1.h"
 
-#include "Vector3.h"
+#include "SafeDelete.h"
 
 #include <cassert>
 
@@ -18,6 +18,7 @@ TitleScene::TitleScene()
 
 TitleScene::~TitleScene()
 {
+
 }
 
 void TitleScene::Initialize()
@@ -26,14 +27,26 @@ void TitleScene::Initialize()
 	BaseScene::Initialize();
 
 	// スプライトの生成処理
-	spriteCommon->LoadTexture(1, L"Resources/title/TITLE.png");
-	titleSprite.reset(Sprite::Create(1));
-	spriteCommon->LoadTexture(2, L"Resources/title/BLACK.png");
-	BGSprite.reset(Sprite::Create(2));
-
-	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, 0 });
-	camera->SetEye({ 0, 2, -10 });
+	if (!spriteCommon->LoadTexture(1, L"Resources/Title/TitleBG.png")) {
+		assert(0);
+		return;
+	}
+	if (!spriteCommon->LoadTexture(2, L"Resources/Title/Title.png")) {
+		assert(0);
+		return;
+	}
+	if (!spriteCommon->LoadTexture(3, L"Resources/Title/PUSH_PLESE_SPACE.png")) {
+		assert(0);
+		return;
+	}
+	if (!spriteCommon->LoadTexture(4, L"Resources/effect1.png")) {
+		assert(0);
+		return;
+	}
+	titleSprites["TitleBG"].reset(Sprite::Create(1));
+	titleSprites["Title"].reset(Sprite::Create(2));
+	titleSprites["PUSH_PLESE_SPACE"].reset(Sprite::Create(3));
+	titleSprites["PUSH_PLESE_SPACE"]->SetPosition({ 0.0f, 100.0f });
 }
 
 void TitleScene::Finalize()
@@ -45,31 +58,27 @@ void TitleScene::Finalize()
 void TitleScene::Update()
 {
 	// シーン切り替え
-	if (input->TriggerKey(DIK_RETURN))
+	if (input->TriggerKey(DIK_SPACE))
 	{
 		change = true;
+		changeTimer.CountStart();
 	}
+
 	if (change)
 	{
-		// タイトルスプライトの色を取得
-		XMFLOAT4 color = titleSprite->GetColor();
-		// アルファ値を加減
-		color.w -= 0.01;
-		// タイトルスプライトの色を設定
-		titleSprite->SetColor(color);
-		if (color.w <= 0)
-		{
+		XMFLOAT4 color = titleSprites["Title"]->GetColor();
+		color.w = lerp(1.0f, 0.01f, changeTimer.GetRatio(changeSeconds));
+		for (auto& sprite : titleSprites) {
+			sprite.second->SetColor(color);
+		}
+		if (changeTimer.GetRatio(changeSeconds) == 1.0f) {
 			sceneManager->SetNextScene(new PlayScene);
 		}
 	}
 
-	titleSprite->Update();
-	// カメラ更新処理
-	camera->Update();
-	// 全衝突チェック
-	collisionMan->CheckAllCollisions();
-	// パーティクル更新処理
-	particleMan->Update();
+	for (auto& sprite : titleSprites) {
+		sprite.second->Update();
+	}
 }
 
 void TitleScene::Draw()
@@ -96,8 +105,9 @@ void TitleScene::BackDraw(ID3D12GraphicsCommandList* cmdList)
 	spriteCommon->PreDraw();
 
 	// 背景スプライト描画処理
-	BGSprite->Draw();
-	titleSprite->Draw();
+	titleSprites["TitleBG"]->Draw();
+	titleSprites["Title"]->Draw();
+	titleSprites["PUSH_PLESE_SPACE"]->Draw();
 }
 
 void TitleScene::ObjectDraw(ID3D12GraphicsCommandList* cmdList)

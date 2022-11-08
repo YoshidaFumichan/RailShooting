@@ -1,6 +1,8 @@
 #pragma once
 #include "Object3d.h"
 
+#include "Timer.h"
+
 /// <summary>
 /// プレイヤーの弾丸
 /// </summary>
@@ -110,7 +112,9 @@ private: // メンバ変数
 	float speed = 0.2f;
 	// 消滅までの距離
 	float distance;
-	// エフェクトの終了までの時間
-	USHORT effectCount = 0;
+	// バレッド消滅までのカウント
+	Timer deleteTimer;
+	// エフェクト終了時間
+	float effectEndTime = 0.5f;
 };
 
